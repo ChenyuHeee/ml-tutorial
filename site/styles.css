@@ -49,7 +49,7 @@ a:hover { text-decoration: underline; }
 }
 
 .sidebar {
-  background: var(--panel);
+  background: var(--bg);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -79,6 +79,10 @@ a:hover { text-decoration: underline; }
   padding: 10px 8px;
   overflow: auto;
   flex: 1;
+}
+
+.nav {
+  background: var(--bg);
 }
 
 .nav-divider {
@@ -125,10 +129,36 @@ a:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 18px;
+  padding: 0 18px;
+  height: 56px;
   border-bottom: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(10px);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.topbar-brand {
+  font-weight: 650;
+  font-size: 14px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.topbar-brand:hover {
+  text-decoration: none;
+  color: var(--link);
+}
+
+.topbar-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -139,6 +169,10 @@ a:hover { text-decoration: underline; }
 
 .current-title {
   font-weight: 650;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 44vw;
 }
 
 .spacer { flex: 1; }
@@ -146,6 +180,11 @@ a:hover { text-decoration: underline; }
 .raw {
   color: var(--muted);
   font-size: 13px;
+}
+
+.raw:hover {
+  text-decoration: none;
+  color: var(--link);
 }
 
 .search {
@@ -223,6 +262,13 @@ a:hover { text-decoration: underline; }
   padding: 18px 22px;
   overflow: auto;
   line-height: 1.65;
+  background: var(--bg);
+}
+
+.content {
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .toc {
@@ -345,10 +391,11 @@ a:hover { text-decoration: underline; }
   display: flex;
   gap: 10px;
   justify-content: flex-end;
+  background: var(--bg);
 }
 
 .btn {
-  background: rgba(142, 150, 170, 0.12);
+  background: transparent;
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -356,9 +403,15 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
 }
 
-.btn:hover { background: rgba(142, 150, 170, 0.18); }
+.btn:hover { background: rgba(142, 150, 170, 0.12); }
 
 @media (max-width: 920px) {
   .app { grid-template-columns: 1fr; }
   .sidebar { display: none; }
+  .topbar {
+    padding: 0 14px;
+  }
+  .current-title {
+    max-width: 52vw;
+  }
 }
