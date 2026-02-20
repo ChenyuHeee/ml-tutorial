@@ -10,86 +10,57 @@
 - scikit-learn（经典 ML）
 - （后面）PyTorch（深度学习）
 
-## 0.2 在 macOS 上创建环境（推荐先用 venv，conda 可选）
+## 0.2 只走一条路：venv + pip（推荐，最不容易卡）
 
-### 先确认你是否已获取教程仓库
-如果你是在网页阅读并准备在本地实操，推荐先获取仓库（这样你不需要手动创建环境文件）：
+你先不要纠结 conda。先把下面这条路走通：
+1) 能创建环境
+2) 能装依赖
+3) VS Code / 终端 / Jupyter 都指向同一个 Python
+
+前置条件：你已经在项目根目录（也就是能看到 `env/requirements.txt` 的目录）。
+
+### Step 1：创建并激活 venv
 
 ```bash
-git clone https://github.com/ChenyuHeee/ml-tutorial.git
-cd ml-tutorial
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-如果你不想用 Git：去仓库页面下载 ZIP，解压后进入文件夹即可。
+### Step 2：安装依赖 + 注册 Jupyter 内核
 
-### 方案 A：conda（推荐）
-如果你终端里出现：`zsh: command not found: conda`，说明你没装 conda 或 PATH 没生效：
-- 直接跳到下面 **方案 B（venv + pip）**，先把学习跑起来
-- 之后如果你想用 conda，再按官方安装 Miniconda/Anaconda 并 `conda init zsh`
+```bash
+pip install -r env/requirements.txt
+python -m ipykernel install --user --name ml-tutorial --display-name "Python (ml-tutorial)"
+```
 
-1. 创建环境（二选一）：
-    - **方式 1（有仓库文件）**：
+### Step 3：自检（这 5 条全通过就算起步成功）
 
-       ```bash
-   conda env create -f env/environment.yml
-       ```
+```bash
+which python
+python -V
+python -m pip -V
+python -c "import sys; print(sys.executable)"
+python -c "import numpy, pandas, sklearn; print('OK', sklearn.__version__)"
+```
 
-    - **方式 2（只看网页也能建）**：新建一个 `environment.yml`，内容如下，然后运行 `conda env create -f environment.yml`：
+### Step 4：在 VS Code 里对齐解释器/内核（非常重要）
+1. 选对 Python 解释器：
+   - Command Palette → `Python: Select Interpreter` → 选择你项目里的 `.venv`
+2. 选对 Notebook 内核：
+   - 打开 notebook → 右上角 Kernel → 选择 `Python (ml-tutorial)`
 
-       ```yaml
-       name: ml-tutorial
-       channels:
-          - conda-forge
-       dependencies:
-          - python=3.11
-          - numpy
-          - pandas
-          - matplotlib
-          - scikit-learn
-          - jupyter
-          - ipykernel
-       ```
-2. 激活环境：
-   - `conda activate ml-tutorial`
-3. 注册 Jupyter 内核：
-   - `python -m ipykernel install --user --name ml-tutorial --display-name "Python (ml-tutorial)"`
+## 0.3 （可选）我就是想用 conda（不推荐作为起步）
+如果你已经非常熟 conda，也可以用它：
 
-4. 启动 Jupyter（任选一种）：
-   - `jupyter lab`
-   - 或 `jupyter notebook`
+```bash
+conda env create -f env/environment.yml
+conda activate ml-tutorial
+python -m ipykernel install --user --name ml-tutorial --display-name "Python (ml-tutorial)"
+```
 
-创建完成后，先做一次“你真的在这个环境里吗？”自检：
-- `which python`
-- `python -V`
-- `python -m pip -V`
-- `python -c "import sys; print(sys.executable)"`
-- `python -c "import numpy, pandas, sklearn; print('OK', sklearn.__version__)"`
+如果你看到 `zsh: command not found: conda`：先别折腾，回到 0.2 的 venv 主线。
 
-### 方案 B：venv + pip（也可以）
-1. `python3 -m venv .venv`
-2. `source .venv/bin/activate`
-3. 安装依赖（二选一）：
-    - **方式 1（有仓库文件）**：
-
-       ```bash
-   pip install -r env/requirements.txt
-       ```
-
-    - **方式 2（只看网页也能装）**：直接运行：
-
-       ```bash
-       pip install numpy pandas matplotlib scikit-learn jupyter ipykernel
-       ```
-4. `python -m ipykernel install --user --name ml-tutorial --display-name "Python (ml-tutorial)"`
-
-5. 启动 Jupyter：
-   - `jupyter lab`
-
-> 如果你还没装 conda：你可以先用 venv 跑通，后续需要时再迁移。
-
-如果你用的是 venv，建议在 VS Code 中把 `.venv/` 放在工作区根目录（不要散落到子目录），这样解释器识别更稳定。
-
-## 0.3 建议的练习目录结构（你照着建即可）
+## 0.4 建议的练习目录结构（你照着建即可）
 在工作区根目录创建：
 - `ml-work/`
   - `ch01-python-data/`
@@ -102,7 +73,7 @@ cd ml-tutorial
 - `train.py`（训练脚本，后续章节会教你写）
 - `README.md`（本章结论与复盘）
 
-## 0.4 最小工程习惯（现在就开始）
+## 0.5 最小工程习惯（现在就开始）
 - 每次实验都记录：数据版本、随机种子、指标
 - 不把“手动在 notebook 里点出来的结果”当最终结果：要脚本化
 - 遇到 bug 的三件套：打印 `shape`、`dtype`、`head()`
@@ -115,7 +86,7 @@ cd ml-tutorial
 - Notebook 用来探索（画图、试想法）
 - 脚本用来复现（别人/未来的你，一行命令跑出同样结果）
 
-## 0.5 验收任务（必须完成）
+## 0.6 验收任务（必须完成）
 1. 能打开 Jupyter，并选择内核 `Python (ml-tutorial)`
 2. 新建一个 notebook，运行：
    - `import numpy as np, pandas as pd, sklearn`
@@ -125,23 +96,21 @@ cd ml-tutorial
 你应当看到类似输出（版本号可能不同）：
 - `1.5.x` 或 `1.4.x`
 
-## 0.6 VS Code 里你必须做的两件事（避免后面踩坑）
+## 0.7 VS Code 里你必须做的两件事（避免后面踩坑）
 1. 选对 Python 解释器：
-   - VS Code → Command Palette → “Python: Select Interpreter” → 选择 `ml-tutorial`（conda）或 `.venv`
+   - VS Code → Command Palette → “Python: Select Interpreter” → 选择你项目里的 `.venv`
 2. 选对 Notebook 内核：
    - 打开 notebook → 右上角 Kernel → 选择 `Python (ml-tutorial)`
 
 额外建议（非常实用）：
-- 打开 VS Code 的 Terminal 后，先执行一次 `python -c "import sys; print(sys.executable)"`，确认它指向你的 conda/venv。
+- 打开 VS Code 的 Terminal 后，先执行一次 `python -c "import sys; print(sys.executable)"`，确认它指向你项目里的 `.venv`。
 - 如果你经常“选错解释器”，可以在工作区设置里固定解释器路径（后面你需要我也可以帮你配）。
 
-## 0.7 常见问题（按症状排查）
-- `conda: command not found`：说明没装 conda 或 PATH 没生效；先用 venv 方案跑通。
+## 0.8 常见问题（按症状排查）
 - notebook 里 import 成功，但终端 import 失败：VS Code 解释器没选对；回到 0.6。
 - `No module named sklearn`：依赖没装到当前环境；确认你已激活环境再 `pip install -r ...`。
 
 更具体一点：
-- **你以为激活了 conda，但其实没有**：在终端里跑 `conda info --envs` 看当前 `*` 在哪。
 - **Kernel 列表里找不到 `Python (ml-tutorial)`**：重跑内核注册命令：`python -m ipykernel install --user --name ml-tutorial --display-name "Python (ml-tutorial)"`。
 - **Jupyter 能跑，VS Code 运行脚本报错**：通常是 VS Code 的解释器不是同一个；用 0.2 的自检命令对比 `sys.executable`。
 

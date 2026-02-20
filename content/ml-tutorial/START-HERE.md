@@ -2,34 +2,51 @@
 
 如果你是从零开始，建议按这个顺序推进，确保不会卡在环境或概念上。
 
-> 重要：你现在看到的是网页版本。读者**不需要**有我本地的工作区，也能跟着做。
+> 重要：你现在看到的是网页版本。读者不需要有任何“仓库路径/我的本地文件”，也能跟着做。
 
-## 0) 你有两种跟学方式（二选一）
+## 0) 只走一条路（推荐）：下载仓库 + venv + pip
+你只需要照着下面做，**不要做任何“二选一”**。这条路在 macOS 上最稳定。
 
-### 方式 A：获取仓库（推荐，最省心）
-如果你电脑里有 Git：
+### Step 1：拿到教程文件（两种都行，选你更顺手的）
+- 有 Git：
 
 ```bash
 git clone https://github.com/ChenyuHeee/ml-tutorial.git
 cd ml-tutorial
 ```
 
-然后用 VS Code 打开这个文件夹，再按第 0 章创建环境。
+- 没有 Git：在仓库页面点 **Code → Download ZIP**，解压后进入该文件夹（核心是进入项目根目录）。
 
-如果你不想用 Git：在仓库页面点 **Code → Download ZIP**，解压后用 VS Code 打开。
+### Step 2：创建并激活虚拟环境（venv）
+在项目根目录运行：
 
-### 方式 B：只看网页也能做（复制代码块）
-你可以在任意文件夹新建一个练习目录（例如 `ml-work/`），然后：
-- 看到“把下面代码保存为 xxx.py”时：你就新建文件，把网页里的代码块粘进去
-- 看到“在终端运行 xxx”时：你就照抄命令运行
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-本教程会尽量把关键代码都写成代码块，方便你直接复制。
+### Step 3：安装依赖
 
-## 1) 先把环境跑通（30–60 分钟）
-- 完成 [chapters/00-setup.md](chapters/00-setup.md)
-- 验收：你能在终端运行 Python，并在 Jupyter 里 `import numpy, pandas, sklearn`（后面会装）
+```bash
+pip install -r env/requirements.txt
+python -m ipykernel install --user --name ml-tutorial --display-name "Python (ml-tutorial)"
+```
 
-> 你不需要 conda 才能开始。本教程提供 **venv + pip** 路线（macOS 自带 python3 即可）。如果你已经装了 conda，也可以用 conda。
+### Step 4：用 3 条命令自检（通过就算起步成功）
+
+```bash
+which python
+python -c "import sys; print(sys.executable)"
+python -c "import numpy, pandas, sklearn; print('OK', sklearn.__version__)"
+```
+
+如果上述三条都 OK，你就已经“起步成功”，直接进入第 0 章的验收任务。
+
+> 想只看网页不下载仓库也可以，但会更麻烦（需要自己建文件夹/粘代码/装依赖）。先按这条主线跑通，再考虑“纯网页复制”。
+
+## 1) 然后按第 0 章再过一遍（10 分钟）
+- 打开 [chapters/00-setup.md](chapters/00-setup.md)
+- 只做“验收任务”，确保 VS Code/终端/Jupyter 使用同一个环境
 
 ## 2) 第一周只做两件事
 - 跟完 [chapters/01-python-data.md](chapters/01-python-data.md) 的必做练习
