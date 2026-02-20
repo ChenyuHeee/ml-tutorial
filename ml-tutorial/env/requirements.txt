@@ -1,0 +1,12 @@
+# 机器学习教程：基础依赖（建议在虚拟环境里安装）
+# 安装：pip install -r requirements.txt
+
+numpy>=1.26
+pandas>=2.1
+matplotlib>=3.8
+scikit-learn>=1.4
+jupyter>=1.0
+ipykernel>=6.29
+
+# 深度学习（按你的机器选择；如果装失败先跳过）
+# torch 的安装在官网会因 CPU/CUDA 不同而不同，本教程在章节里给出安装方式。

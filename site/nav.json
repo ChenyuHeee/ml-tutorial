@@ -1,0 +1,22 @@
+{
+  "title": "从零开始的机器学习教程",
+  "items": [
+    {"title": "开始这里", "path": "content/ml-tutorial/START-HERE.md"},
+    {"title": "教程总览", "path": "content/ml-tutorial/README.md"},
+
+    {"title": "第 0 章：环境准备", "path": "content/ml-tutorial/chapters/00-setup.md"},
+    {"title": "第 1 章：Python 数据处理", "path": "content/ml-tutorial/chapters/01-python-data.md"},
+    {"title": "第 2 章：ML 基础（指标/验证/基线）", "path": "content/ml-tutorial/chapters/02-ml-basics.md"},
+    {"title": "第 3 章：线性回归与训练脚本", "path": "content/ml-tutorial/chapters/03-linear-regression.md"},
+    {"title": "第 4 章：逻辑回归与二分类评估", "path": "content/ml-tutorial/chapters/04-logistic-regression.md"},
+    {"title": "第 5 章：Pipeline 与数据泄漏", "path": "content/ml-tutorial/chapters/05-features-and-leakage.md"},
+    {"title": "第 6 章：树模型与交叉验证", "path": "content/ml-tutorial/chapters/06-trees-and-cv.md"},
+    {"title": "第 7 章：无监督（聚类/降维）", "path": "content/ml-tutorial/chapters/07-unsupervised.md"},
+    {"title": "第 8 章：PyTorch 入门", "path": "content/ml-tutorial/chapters/08-pytorch-basics.md"},
+
+    {"title": "最终项目（Capstone）", "path": "content/ml-tutorial/projects/capstone.md"},
+
+    {"title": "代码脚手架", "path": "content/ml-tutorial/exercises/README.md"},
+    {"title": "每周打卡模板", "path": "content/ml-tutorial/templates/weekly-checklist.md"}
+  ]
+}
