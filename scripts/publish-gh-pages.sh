@@ -11,6 +11,7 @@ set -euo pipefail
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 SITE_DIR="$ROOT_DIR/site"
 TUTORIAL_DIR="$ROOT_DIR/ml-tutorial"
+CURRICULUM_DIR="$ROOT_DIR/ml-curriculum"
 BRANCH="gh-pages"
 DO_PUSH=false
 
@@ -25,6 +26,11 @@ fi
 
 if [[ ! -d "$TUTORIAL_DIR" ]]; then
   echo "ml-tutorial/ not found. Aborting." >&2
+  exit 1
+fi
+
+if [[ ! -d "$CURRICULUM_DIR" ]]; then
+  echo "ml-curriculum/ not found. Aborting." >&2
   exit 1
 fi
 
@@ -43,6 +49,7 @@ trap cleanup EXIT
 mkdir -p "$TMP_DIR/content"
 cp -R "$SITE_DIR"/* "$TMP_DIR/"
 cp -R "$TUTORIAL_DIR" "$TMP_DIR/content/ml-tutorial"
+cp -R "$CURRICULUM_DIR" "$TMP_DIR/content/ml-curriculum"
 
 # Switch branch
 cd "$ROOT_DIR"
