@@ -10,6 +10,11 @@
 - 跟完 [chapters/01-python-data.md](chapters/01-python-data.md) 的必做练习
 - 跟完 [chapters/02-ml-basics.md](chapters/02-ml-basics.md) 的验收任务
 
+## 2.5) 随身携带的速查（强烈建议收藏）
+- 指标与验证：见 [appendix/01-metrics-and-validation.md](appendix/01-metrics-and-validation.md)
+- 数据泄漏排查：见 [appendix/02-leakage-checklist.md](appendix/02-leakage-checklist.md)
+- sklearn / PyTorch 配方与排错：见 [appendix/README.md](appendix/README.md)
+
 ## 3) 遇到卡点的处理顺序
 1. 把报错信息复制出来（不要只说“报错了”）
 2. 打印关键变量：shape、dtype、head()

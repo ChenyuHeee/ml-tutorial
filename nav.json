@@ -15,6 +15,14 @@
     {"title": "第 7 章：无监督（聚类/降维）", "path": "content/ml-tutorial/chapters/07-unsupervised.md"},
     {"title": "第 8 章：PyTorch 入门", "path": "content/ml-tutorial/chapters/08-pytorch-basics.md"},
 
+    {"title": "— 附录（速查/排错/配方）—", "path": "content/ml-tutorial/appendix/README.md"},
+    {"title": "附录总览", "path": "content/ml-tutorial/appendix/README.md"},
+    {"title": "附录 01：指标与验证速查", "path": "content/ml-tutorial/appendix/01-metrics-and-validation.md"},
+    {"title": "附录 02：数据泄漏排查清单", "path": "content/ml-tutorial/appendix/02-leakage-checklist.md"},
+    {"title": "附录 03：sklearn 实战配方", "path": "content/ml-tutorial/appendix/03-sklearn-recipes.md"},
+    {"title": "附录 04：PyTorch 实战配方", "path": "content/ml-tutorial/appendix/04-pytorch-recipes.md"},
+    {"title": "附录 05：常见报错与排错路线图", "path": "content/ml-tutorial/appendix/05-debugging-playbook.md"},
+
     {"title": "最终项目（Capstone）", "path": "content/ml-tutorial/projects/capstone.md"},
 
     {"title": "代码脚手架", "path": "content/ml-tutorial/exercises/README.md"},
