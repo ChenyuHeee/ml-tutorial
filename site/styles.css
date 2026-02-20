@@ -120,6 +120,67 @@ a:hover { text-decoration: underline; }
   font-size: 13px;
 }
 
+.search {
+  position: relative;
+  width: min(520px, 48vw);
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  outline: none;
+}
+
+.search-input::placeholder { color: rgba(170, 179, 207, 0.8); }
+
+.search-input:focus {
+  border-color: rgba(122, 162, 255, 0.45);
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  max-height: 52vh;
+  overflow: auto;
+  background: rgba(15, 23, 48, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  padding: 8px;
+  z-index: 20;
+}
+
+.search-item {
+  display: block;
+  padding: 10px 10px;
+  border-radius: 12px;
+}
+
+.search-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+}
+
+.search-item-title {
+  font-weight: 650;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.search-item-snippet {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .content {
   padding: 18px 22px;
   overflow: auto;
@@ -153,6 +214,49 @@ a:hover { text-decoration: underline; }
 .toc-item:hover { color: var(--text); }
 
 .toc-h3 { padding-left: 14px; }
+
+.chapter-checklist {
+  border: 1px solid rgba(122, 162, 255, 0.25);
+  background: rgba(122, 162, 255, 0.08);
+  border-radius: 14px;
+  padding: 12px 12px;
+  margin: 4px 0 14px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: blur(6px);
+}
+
+.checklist-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.checklist-title { font-weight: 700; }
+
+.checklist-progress {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.checklist-item input { margin-top: 3px; }
+
+.checklist-item-text { color: var(--text); }
 
 .content h1, .content h2, .content h3 {
   line-height: 1.25;

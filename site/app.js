@@ -144,6 +144,112 @@ function addCopyButtons(container) {
   }
 }
 
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+function extractAcceptanceTasks(container) {
+  const keywords = ['验收任务', '验收标准', '验收清单'];
+  const headings = Array.from(container.querySelectorAll('h2, h3, h4'));
+  const targetHeading = headings.find((h) =>
+    keywords.some((k) => (h.textContent || '').includes(k))
+  );
+  if (!targetHeading) return [];
+
+  const headingLevel = Number(targetHeading.tagName.slice(1));
+  const tasks = [];
+
+  // Walk siblings until next heading with level <= current
+  let node = targetHeading.nextElementSibling;
+  while (node) {
+    const tag = node.tagName?.toLowerCase?.() || '';
+    if (tag.startsWith('h')) {
+      const lvl = Number(tag.slice(1));
+      if (!Number.isNaN(lvl) && lvl <= headingLevel) break;
+    }
+
+    if (tag === 'ul' || tag === 'ol') {
+      for (const li of node.querySelectorAll(':scope > li')) {
+        const t = (li.textContent || '').trim();
+        if (t) tasks.push(t);
+      }
+      // Prefer the first list as the checklist.
+      if (tasks.length > 0) break;
+    }
+
+    node = node.nextElementSibling;
+  }
+
+  return tasks;
+}
+
+function makeChecklistKey(path, idx) {
+  return `ml_tutorial_check:${path}::${idx}`;
+}
+
+function buildChecklist(container, path) {
+  // Remove previous checklist if any
+  const old = container.querySelector('.chapter-checklist');
+  if (old) old.remove();
+
+  const tasks = extractAcceptanceTasks(container);
+  if (!tasks || tasks.length === 0) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'chapter-checklist';
+
+  const header = document.createElement('div');
+  header.className = 'checklist-header';
+
+  const title = document.createElement('div');
+  title.className = 'checklist-title';
+  title.textContent = '本章验收清单';
+
+  const progress = document.createElement('div');
+  progress.className = 'checklist-progress';
+
+  header.appendChild(title);
+  header.appendChild(progress);
+
+  const items = document.createElement('div');
+  items.className = 'checklist-items';
+
+  function updateProgress() {
+    const checked = items.querySelectorAll('input[type="checkbox"]:checked').length;
+    progress.textContent = `${checked}/${tasks.length} 已完成`;
+  }
+
+  tasks.forEach((text, idx) => {
+    const row = document.createElement('label');
+    row.className = 'checklist-item';
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    const key = makeChecklistKey(path, idx);
+    cb.checked = localStorage.getItem(key) === '1';
+    cb.addEventListener('change', () => {
+      localStorage.setItem(key, cb.checked ? '1' : '0');
+      updateProgress();
+    });
+
+    const span = document.createElement('div');
+    span.className = 'checklist-item-text';
+    span.textContent = text;
+
+    row.appendChild(cb);
+    row.appendChild(span);
+    items.appendChild(row);
+  });
+
+  wrap.appendChild(header);
+  wrap.appendChild(items);
+  container.prepend(wrap);
+  updateProgress();
+}
+
 function renderMarkdown(md, basePath) {
   marked.setOptions({
     gfm: true,
@@ -164,6 +270,7 @@ function renderMarkdown(md, basePath) {
   const container = document.getElementById('content');
   container.innerHTML = html;
 
+  buildChecklist(container, basePath);
   buildToc(container);
   addCopyButtons(container);
 
@@ -183,10 +290,7 @@ function renderMarkdown(md, basePath) {
 function renderCodeFile(text, path) {
   const container = document.getElementById('content');
   const lang = guessLanguageFromPath(path);
-  const escaped = text
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;');
+  const escaped = escapeHtml(text);
 
   const codeHtml = `<pre><code class="language-${lang}">${escaped}</code></pre>`;
   container.innerHTML = codeHtml;
@@ -215,6 +319,126 @@ async function loadDoc(nav, path) {
   } else {
     renderCodeFile(text, path);
   }
+}
+
+function setupSearch(nav) {
+  const input = document.getElementById('searchInput');
+  const resultsEl = document.getElementById('searchResults');
+  const box = document.getElementById('searchBox');
+  if (!input || !resultsEl || !box) return;
+
+  const searchable = nav.items.filter((x) => !isDividerItem(x));
+  let indexPromise = null;
+
+  function hideResults() {
+    resultsEl.hidden = true;
+    resultsEl.innerHTML = '';
+  }
+
+  function showResults() {
+    resultsEl.hidden = false;
+  }
+
+  function buildIndexOnce() {
+    if (indexPromise) return indexPromise;
+    indexPromise = (async () => {
+      const docs = [];
+      for (const item of searchable) {
+        try {
+          const text = await fetchText(item.path);
+          docs.push({
+            title: item.title,
+            path: item.path,
+            text: text,
+            textLower: text.toLowerCase(),
+            titleLower: item.title.toLowerCase(),
+          });
+        } catch {
+          // ignore missing
+        }
+      }
+      return docs;
+    })();
+    return indexPromise;
+  }
+
+  function makeSnippet(fullText, queryLower) {
+    const lower = fullText.toLowerCase();
+    const at = lower.indexOf(queryLower);
+    if (at < 0) return '';
+    const start = Math.max(0, at - 40);
+    const end = Math.min(fullText.length, at + queryLower.length + 80);
+    return fullText.slice(start, end).replaceAll('\n', ' ').trim();
+  }
+
+  function renderResults(items, queryLower) {
+    if (items.length === 0) {
+      resultsEl.innerHTML = `<div class="search-item"><div class="search-item-title">无结果</div></div>`;
+      showResults();
+      return;
+    }
+
+    const html = items
+      .map((x) => {
+        const snip = escapeHtml(makeSnippet(x.text, queryLower));
+        return (
+          `<a class="search-item" href="#/${encodeURIComponent(x.path)}" data-path="${escapeHtml(
+            x.path
+          )}">` +
+          `<div class="search-item-title">${escapeHtml(x.title)}</div>` +
+          (snip ? `<div class="search-item-snippet">${snip}</div>` : '') +
+          `</a>`
+        );
+      })
+      .join('');
+    resultsEl.innerHTML = html;
+    for (const a of resultsEl.querySelectorAll('a.search-item')) {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const p = a.dataset.path;
+        if (p) setRoute(p);
+        hideResults();
+        input.blur();
+      });
+    }
+    showResults();
+  }
+
+  let timer = null;
+  input.addEventListener('input', () => {
+    const q = (input.value || '').trim();
+    if (q.length < 2) {
+      hideResults();
+      return;
+    }
+
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(async () => {
+      const queryLower = q.toLowerCase();
+      const docs = await buildIndexOnce();
+
+      const hits = [];
+      for (const d of docs) {
+        const inTitle = d.titleLower.includes(queryLower);
+        const inBody = d.textLower.includes(queryLower);
+        if (!inTitle && !inBody) continue;
+        hits.push(d);
+        if (hits.length >= 20) break;
+      }
+      renderResults(hits, queryLower);
+    }, 180);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      hideResults();
+      input.blur();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!box.contains(e.target)) hideResults();
+  });
 }
 
 function setActiveLink(path) {
@@ -266,6 +490,8 @@ async function main() {
     });
     navEl.appendChild(a);
   }
+
+  setupSearch(nav);
 
   async function onRouteChange() {
     const first = nav.items.find((x) => !isDividerItem(x));
