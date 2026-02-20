@@ -11,9 +11,40 @@
 - （后面）PyTorch（深度学习）
 
 ## 0.2 在 macOS 上创建环境（推荐 conda）
+
+### 先确认你是否已获取教程仓库
+如果你是在网页阅读并准备在本地实操，推荐先获取仓库（这样你不需要手动创建环境文件）：
+
+```bash
+git clone https://github.com/ChenyuHeee/ml-tutorial.git
+cd ml-tutorial
+```
+
+如果你不想用 Git：去仓库页面下载 ZIP，解压后进入文件夹即可。
+
 ### 方案 A：conda（推荐）
-1. 创建环境：
-   - `conda env create -f ml-tutorial/env/environment.yml`
+1. 创建环境（二选一）：
+    - **方式 1（有仓库文件）**：
+
+       ```bash
+       conda env create -f ml-tutorial/env/environment.yml
+       ```
+
+    - **方式 2（只看网页也能建）**：新建一个 `environment.yml`，内容如下，然后运行 `conda env create -f environment.yml`：
+
+       ```yaml
+       name: ml-tutorial
+       channels:
+          - conda-forge
+       dependencies:
+          - python=3.11
+          - numpy
+          - pandas
+          - matplotlib
+          - scikit-learn
+          - jupyter
+          - ipykernel
+       ```
 2. 激活环境：
    - `conda activate ml-tutorial`
 3. 注册 Jupyter 内核：
@@ -33,7 +64,18 @@
 ### 方案 B：venv + pip（也可以）
 1. `python3 -m venv .venv`
 2. `source .venv/bin/activate`
-3. `pip install -r ml-tutorial/env/requirements.txt`
+3. 安装依赖（二选一）：
+    - **方式 1（有仓库文件）**：
+
+       ```bash
+       pip install -r ml-tutorial/env/requirements.txt
+       ```
+
+    - **方式 2（只看网页也能装）**：直接运行：
+
+       ```bash
+       pip install numpy pandas matplotlib scikit-learn jupyter ipykernel
+       ```
 4. `python -m ipykernel install --user --name ml-tutorial --display-name "Python (ml-tutorial)"`
 
 5. 启动 Jupyter：
