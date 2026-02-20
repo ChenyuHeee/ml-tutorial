@@ -10,7 +10,7 @@
 - scikit-learn（经典 ML）
 - （后面）PyTorch（深度学习）
 
-## 0.2 在 macOS 上创建环境（推荐 conda）
+## 0.2 在 macOS 上创建环境（推荐先用 venv，conda 可选）
 
 ### 先确认你是否已获取教程仓库
 如果你是在网页阅读并准备在本地实操，推荐先获取仓库（这样你不需要手动创建环境文件）：
@@ -23,11 +23,15 @@ cd ml-tutorial
 如果你不想用 Git：去仓库页面下载 ZIP，解压后进入文件夹即可。
 
 ### 方案 A：conda（推荐）
+如果你终端里出现：`zsh: command not found: conda`，说明你没装 conda 或 PATH 没生效：
+- 直接跳到下面 **方案 B（venv + pip）**，先把学习跑起来
+- 之后如果你想用 conda，再按官方安装 Miniconda/Anaconda 并 `conda init zsh`
+
 1. 创建环境（二选一）：
     - **方式 1（有仓库文件）**：
 
        ```bash
-       conda env create -f ml-tutorial/env/environment.yml
+   conda env create -f env/environment.yml
        ```
 
     - **方式 2（只看网页也能建）**：新建一个 `environment.yml`，内容如下，然后运行 `conda env create -f environment.yml`：
@@ -68,7 +72,7 @@ cd ml-tutorial
     - **方式 1（有仓库文件）**：
 
        ```bash
-       pip install -r ml-tutorial/env/requirements.txt
+   pip install -r env/requirements.txt
        ```
 
     - **方式 2（只看网页也能装）**：直接运行：

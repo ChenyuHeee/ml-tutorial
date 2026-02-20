@@ -27,3 +27,9 @@
 - `Expected all tensors to be on the same device`：device 不一致
 - `CUDA out of memory`：batch 太大/模型太大/没清理
 - loss 变成 NaN：学习率过大、输入异常、除零
+
+## 7) 环境/命令常见报错（macOS / zsh）
+- `zsh: command not found: conda`
+	- 含义：系统找不到 conda（没装，或 PATH 没生效）
+	- 最快解决：别卡在 conda，上教程的 **venv + pip** 方案先跑通
+	- 如果你确实要用 conda：安装 Miniconda/Anaconda 后执行 `conda init zsh`，重开终端再试 `conda --version`
