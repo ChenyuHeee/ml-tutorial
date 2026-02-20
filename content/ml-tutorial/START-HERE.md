@@ -29,6 +29,8 @@ cd ml-tutorial
 - 完成 [chapters/00-setup.md](chapters/00-setup.md)
 - 验收：你能在终端运行 Python，并在 Jupyter 里 `import numpy, pandas, sklearn`（后面会装）
 
+> 你不需要 conda 才能开始。本教程提供 **venv + pip** 路线（macOS 自带 python3 即可）。如果你已经装了 conda，也可以用 conda。
+
 ## 2) 第一周只做两件事
 - 跟完 [chapters/01-python-data.md](chapters/01-python-data.md) 的必做练习
 - 跟完 [chapters/02-ml-basics.md](chapters/02-ml-basics.md) 的验收任务

@@ -1,47 +1,157 @@
-# 第 3 章：线性回归与第一个训练脚本（1 周）
+# 第 3 章：线性回归与第一个可复现训练脚本（1 周）
 
-目标：你能用 sklearn 做一个回归任务的端到端训练，并输出可复现结果。
+目标：你能把一个回归任务做成**一键可运行**的 `train.py`，并输出稳定的 MAE/RMSE 结果（别人拿到你的代码也能复现）。
 
-## 3.1 概念最小集
+> 本章使用无需注册的数据集：`sklearn.datasets.fetch_california_housing`。
+
+## 3.1 概念最小集（够用就行）
 - 线性模型：$\hat{y} = w^T x + b$
 - 损失：MSE（均方误差）
-- 正则化（知道即可）：L2（岭回归）抑制过大权重
+- 指标：
+  - MAE：更直观、对异常值更稳
+  - RMSE：更惩罚大误差（更怕“错得离谱”）
+- 正则化（知道即可）：L2（岭回归）抑制过大权重，通常更稳
 
-## 3.2 你要写的最小训练脚本（思路）
-你需要完成的流程：
-1. 读取数据
-2. 划分 train/test（或 train/val/test）
-3. 处理缺失值、编码类别、缩放数值（后面会用 Pipeline 规范化）
-4. 训练线性回归/岭回归
-5. 输出指标：MAE、RMSE
-6. 保存模型（可选）：joblib/pickle
+## 3.2 本章你要交付的东西（先把目标钉死）
+在你的练习目录（推荐：`ml-work/ch03-linear-regression/`）里，至少有：
+- `train.py`：训练 + 评估 + 保存模型（一个命令跑完）
+- `evaluate.py`：加载模型 + 在测试集输出指标
+- `README.md`：复现命令 + 你得到的指标
 
-你可以直接把“最小脚本清单”当作 `train.py` 的结构：
-- 固定随机种子（例如 split 的 `random_state=42`）
-- 只先用数值列跑通（类别列先丢掉也可以）
-- 用 `sklearn.metrics` 输出 MAE / RMSE
-- 把指标打印成一行，方便你记录与对比
+如果你只看网页也能做：看到“把下面代码保存为 …”就新建文件，把代码块粘进去即可。
 
-## 3.3 必做练习
-- 选一个回归数据集（House Prices 很合适）
-- 先跑最简单版本（只用数值特征也行）
-- 记录：
-  - 你的特征列表
-  - 你的切分方式
-  - MAE/RMSE
+## 3.3 直接可用：`train.py`（复制即可运行）
+把下面代码保存为 `train.py`，然后运行：
 
-## 3.4 验收任务
-在 `ml-work/ch03-linear-regression/` 里完成：
-- `train.py`：一键训练并打印指标
-- `README.md`：写明数据、特征、指标、复现方式
+```bash
+python train.py
+```
 
-验收标准（满足任意一条就算没完成）：
-- 运行 `python train.py` 会直接打印 MAE/RMSE
-- README 里写了“训练命令”和“预期输出长什么样”（例如包含 `MAE=`）
+```python
+from __future__ import annotations
 
-## 3.5 常见坑
-- 在划分数据之前对全量数据 fit 了 scaler/encoder（泄漏）
-- 只看 R² 不看 MAE/RMSE（对业务不直观）
-- 没有固定随机种子，结果每次都变
+from pathlib import Path
 
-完成本章后进入第 4 章。
+import joblib
+import numpy as np
+from sklearn.datasets import fetch_california_housing
+from sklearn.linear_model import Ridge
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
+
+def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+  return float(mean_squared_error(y_true, y_pred, squared=False))
+
+
+def main() -> None:
+  # 1) 读取数据（无需下载文件）
+  ds = fetch_california_housing(as_frame=True)
+  X = ds.data
+  y = ds.target
+
+  # 2) 切分
+  X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+  )
+
+  # 3) 预处理 + 模型（先用最简单的数值缩放即可）
+  pipe = Pipeline(
+    steps=[
+      ("scaler", StandardScaler()),
+      ("model", Ridge(alpha=1.0, random_state=42)),
+    ]
+  )
+
+  # 4) 训练
+  pipe.fit(X_train, y_train)
+
+  # 5) 评估
+  pred = pipe.predict(X_test)
+  mae = mean_absolute_error(y_test, pred)
+  r = rmse(y_test.to_numpy(), pred)
+
+  print("dataset: california_housing")
+  print("n_train:", len(X_train), "n_test:", len(X_test))
+  print("mae:", round(float(mae), 4))
+  print("rmse:", round(float(r), 4))
+
+  # 6) 保存（把预处理和模型一起存）
+  Path("models").mkdir(exist_ok=True)
+  out_path = Path("models") / "ridge.joblib"
+  joblib.dump(pipe, out_path)
+  print("saved:", out_path.as_posix())
+
+
+if __name__ == "__main__":
+  main()
+```
+
+你应当能看到类似输出（数值会略有差异，但结构应该一致）：
+
+```text
+dataset: california_housing
+n_train: 16512 n_test: 4128
+mae: ...
+rmse: ...
+saved: models/ridge.joblib
+```
+
+## 3.4 直接可用：`evaluate.py`（加载模型再评估一次）
+把下面保存为 `evaluate.py`，运行：
+
+```bash
+python evaluate.py
+```
+
+```python
+from __future__ import annotations
+
+from pathlib import Path
+
+import joblib
+import numpy as np
+from sklearn.datasets import fetch_california_housing
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.model_selection import train_test_split
+
+
+def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+  return float(mean_squared_error(y_true, y_pred, squared=False))
+
+
+def main() -> None:
+  model_path = Path("models") / "ridge.joblib"
+  pipe = joblib.load(model_path)
+
+  ds = fetch_california_housing(as_frame=True)
+  X = ds.data
+  y = ds.target
+  _, X_test, _, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+  pred = pipe.predict(X_test)
+  print("loaded:", model_path.as_posix())
+  print("mae:", round(float(mean_absolute_error(y_test, pred)), 4))
+  print("rmse:", round(float(rmse(y_test.to_numpy(), pred)), 4))
+
+
+if __name__ == "__main__":
+  main()
+```
+
+## 3.5 验收任务（必须完成）
+- `python train.py` 能一键输出 MAE/RMSE，并保存 `models/ridge.joblib`
+- `python evaluate.py` 能加载模型并输出同样口径的 MAE/RMSE
+- `README.md` 至少写清楚三件事：
+  - 你用的数据集是什么
+  - 训练/评估命令是什么
+  - 你跑出来的指标是多少
+
+## 3.6 常见坑（你遇到就回来看）
+- 没固定 `random_state`：每次切分不同，指标不同
+- 把指标算错：RMSE 不是 MSE；别把 `squared=False` 忘了
+- 保存了“纯模型”没保存预处理：后面推理时数据分布不一致会崩（所以我们存 `Pipeline`）
+
+完成本章后进入第 4 章（分类 + 概率 + 阈值）。
