@@ -26,6 +26,10 @@
 8. PyTorch 入门：从零训练一个小网络 → [chapters/08-pytorch-basics.md](chapters/08-pytorch-basics.md)
 9. 做一个作品集级小项目（端到端）→ [projects/capstone.md](projects/capstone.md)
 
+## 附录（速查 + 排错 + 配方）
+学习/做项目时随时查：指标与验证、数据泄漏、sklearn/PyTorch 配方与常见报错。
+- 附录总览 → [appendix/README.md](appendix/README.md)
+
 ## 作业与模板
 - 每周打卡模板 → [templates/weekly-checklist.md](templates/weekly-checklist.md)
 - 项目 README 模板（保证可复现）→ [templates/project-readme-template.md](templates/project-readme-template.md)
