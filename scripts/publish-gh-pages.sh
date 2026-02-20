@@ -84,6 +84,13 @@ else
   echo "Created/updated local '$BRANCH' branch. Use --push to push to origin."
 fi
 
+# Some macOS/external-drive setups may create AppleDouble files like ._foo or
+# even unexpected untracked directories that can block switching branches.
+# Clean them up so the script can always switch back.
+rm -rf ml-tutorial ._ml-tutorial || true
+find . -name '._*' -delete || true
+git clean -fd >/dev/null 2>&1 || true
+
 # Back to previous branch
 if [[ "$CURRENT_BRANCH" != "$BRANCH" ]]; then
   git switch "$CURRENT_BRANCH" >/dev/null 2>&1 || true
