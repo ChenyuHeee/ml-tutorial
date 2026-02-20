@@ -319,10 +319,7 @@ a:hover { text-decoration: underline; }
   border-radius: 14px;
   padding: 12px 12px;
   margin: 4px 0 14px;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  backdrop-filter: blur(6px);
+  position: relative;
 }
 
 .checklist-header {
