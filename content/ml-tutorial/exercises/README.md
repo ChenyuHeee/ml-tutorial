@@ -8,7 +8,16 @@
 - Pipeline + ColumnTransformer 骨架 → `sklearn_pipeline_skeleton.py`
 - 交叉验证对比多模型 → `sklearn_cv_compare.py`
 
+在可视化界面里直接点开：
+- [sklearn_train_skeleton.py](sklearn_train_skeleton.py)
+- [threshold_sweep.py](threshold_sweep.py)
+- [sklearn_pipeline_skeleton.py](sklearn_pipeline_skeleton.py)
+- [sklearn_cv_compare.py](sklearn_cv_compare.py)
+
 ## PyTorch（深度学习）
 - 训练循环骨架（分类）→ `pytorch_train_skeleton.py`
+
+在可视化界面里直接点开：
+- [pytorch_train_skeleton.py](pytorch_train_skeleton.py)
 
 使用建议：先跑通，再逐步改。

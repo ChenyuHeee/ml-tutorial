@@ -59,6 +59,16 @@ a:hover { text-decoration: underline; }
   flex: 1;
 }
 
+.nav-divider {
+  margin: 10px 10px 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--muted);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
 .nav a {
   display: block;
   padding: 10px 12px;
@@ -116,6 +126,34 @@ a:hover { text-decoration: underline; }
   line-height: 1.65;
 }
 
+.toc {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  padding: 12px 12px;
+  margin: 4px 0 14px;
+}
+
+.toc-title {
+  font-weight: 650;
+  margin-bottom: 6px;
+}
+
+.toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toc-item {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.toc-item:hover { color: var(--text); }
+
+.toc-h3 { padding-left: 14px; }
+
 .content h1, .content h2, .content h3 {
   line-height: 1.25;
 }
@@ -139,6 +177,24 @@ a:hover { text-decoration: underline; }
   border-radius: 14px;
   overflow: auto;
   border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.15);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: rgba(0,0,0,0.25);
 }
 
 .pager {

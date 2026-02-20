@@ -1,6 +1,7 @@
 {
   "title": "从零开始的机器学习教程",
   "items": [
+    {"title": "— 教程 —", "path": "content/ml-tutorial/START-HERE.md"},
     {"title": "开始这里", "path": "content/ml-tutorial/START-HERE.md"},
     {"title": "教程总览", "path": "content/ml-tutorial/README.md"},
 
@@ -17,6 +18,22 @@
     {"title": "最终项目（Capstone）", "path": "content/ml-tutorial/projects/capstone.md"},
 
     {"title": "代码脚手架", "path": "content/ml-tutorial/exercises/README.md"},
-    {"title": "每周打卡模板", "path": "content/ml-tutorial/templates/weekly-checklist.md"}
+    {"title": "  · sklearn 训练骨架", "path": "content/ml-tutorial/exercises/sklearn_train_skeleton.py"},
+    {"title": "  · 阈值扫描", "path": "content/ml-tutorial/exercises/threshold_sweep.py"},
+    {"title": "  · Pipeline 骨架", "path": "content/ml-tutorial/exercises/sklearn_pipeline_skeleton.py"},
+    {"title": "  · CV 对比多模型", "path": "content/ml-tutorial/exercises/sklearn_cv_compare.py"},
+    {"title": "  · PyTorch 训练循环", "path": "content/ml-tutorial/exercises/pytorch_train_skeleton.py"},
+    {"title": "每周打卡模板", "path": "content/ml-tutorial/templates/weekly-checklist.md"},
+
+    {"title": "— 课程体系（大纲）—", "path": "content/ml-curriculum/README.md"},
+    {"title": "课程总览", "path": "content/ml-curriculum/README.md"},
+    {"title": "阶段 0：工具与基础", "path": "content/ml-curriculum/phases/00-setup.md"},
+    {"title": "阶段 1：数学与概率", "path": "content/ml-curriculum/phases/01-math.md"},
+    {"title": "阶段 2：经典 ML 核心", "path": "content/ml-curriculum/phases/02-classic-ml.md"},
+    {"title": "阶段 3：无监督", "path": "content/ml-curriculum/phases/03-unsupervised.md"},
+    {"title": "阶段 4：深度学习", "path": "content/ml-curriculum/phases/04-deep-learning.md"},
+    {"title": "阶段 5：工程化", "path": "content/ml-curriculum/phases/05-ml-engineering.md"},
+    {"title": "项目清单", "path": "content/ml-curriculum/projects/project-list.md"},
+    {"title": "12 周路线", "path": "content/ml-curriculum/projects/12-week-plan.md"}
   ]
 }
